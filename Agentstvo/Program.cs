@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Agentstvo.MyObjects;
 using Agentstvo.Owners;
 
+//перенести запись в файл в каждый класс
+//управлять записью будет класс savemanager
 
 namespace Agentstvo
 {
