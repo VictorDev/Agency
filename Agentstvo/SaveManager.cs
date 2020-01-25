@@ -14,7 +14,7 @@ namespace Agentstvo
         public SaveManager(String filename)
         {
             file = new FileInfo(filename+".txt");
-            file.CreateText().Close();
+            //file.CreateText().Close();
         }
         public void WriteLine(String line)
         {

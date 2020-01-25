@@ -16,6 +16,7 @@ namespace Agentstvo
     {
         static void Main(string[] args)
         {
+            
             List<MyObject> listObjects = new List<MyObject>();
             Agency agency = new Agency();
             bool clearFile = WriteToFile.ClearFile();

@@ -12,7 +12,7 @@ using Agentstvo.MyObjects;
     */
 namespace Agentstvo
 {
-    class MyObject
+    class MyObject:IWritableObject
     {
         private string name; //имя объекта
         private int price; //цена объекта
@@ -47,7 +47,9 @@ namespace Agentstvo
             this.agency = agency;
             Console.WriteLine("Введите данные об объекте");
                 input();
-                WriteToFile.Write(this);
+            SaveManager saveManager = new SaveManager("myobject");
+            saveManager.WriteObject(this);
+                //WriteToFile.Write(this);
            
             
         }
@@ -207,6 +209,71 @@ namespace Agentstvo
                 Console.WriteLine(request);
                 v = Console.ReadLine();
             } while (v.Length==0);
+        }
+
+        public void Write(SaveManager sw)
+        {
+            //StreamWriter sw = new StreamWriter("myobject.txt", true);
+            //StreamWriter nn = new StreamWriter("test.txt",true);
+            sw.WriteLine($"Имя объекта:{name} ");
+            sw.WriteLine($"Цена объекта:{Price} ");
+            sw.WriteLine($"Площадь объекта: {Square}");
+            sw.WriteLine($"Район расположения:{Description}");
+            sw.WriteLine($"Улица:{Street}");
+            sw.WriteLine($"Номер дома:{NHouse}");
+            ObjectType objectType = ObjectType;
+            string type = objectType.Type;
+            sw.WriteLine($"Вид недвижимости:{type}");
+            //оставляю ненужные поля пустые, чтобы общее количество строк всегда было одинаковым
+            if (type.Equals("Дом"))
+            {
+                //функция сделана для того чтобы получить все данные, даже те которые не определены в интерфейсе
+                string[] data = objectType.getData();
+                sw.WriteLine($"Номер квартиры:0");
+                sw.WriteLine($"Количество комнат:{data[0]}");
+            }
+            else if (type.Equals("Квартира"))
+            {
+                string[] data = objectType.getData();
+                sw.WriteLine($"Номер квартиры:{data[0]}");
+                sw.WriteLine($"Количество комнат:{data[1]}");
+            }
+            else if (type.Equals("Гостинка"))
+            {
+                string[] data = objectType.getData();
+                sw.WriteLine($"Номер квартиры:{data[0]}");
+                sw.WriteLine($"Количество комнат:0");
+            }
+            else
+            {
+                sw.WriteLine($"Номер квартиры:0");
+                sw.WriteLine($"Количество комнат:0");
+            }
+            sw.WriteLine($"Торг (есть/нет):{Bargaining}");
+            sw.WriteLine($"Описание:{Description}");
+            sw.WriteLine($"Примечания:{Note}");
+
+            sw.WriteLine($"Статус:{Status}");
+            Property_Owner owner = Owner;
+            string propery = owner.Type;
+            sw.WriteLine($"Владелец:{propery}");
+            //оставляю ненужные поля пустые, чтобы общее количество строк всегда было одинаковым
+            if (propery.Equals("Физ. лицо"))
+            {
+                string[] data = owner.getData();
+                sw.WriteLine($"ФИО:{data[0]}");
+                sw.WriteLine($"Телефон:{data[1]}");
+                sw.WriteLine($"Адрес:-");
+            }
+            else if (propery.Equals("Агенство"))
+            {
+                string[] data = owner.getData();
+                sw.WriteLine($"Название:{data[0]}");
+                sw.WriteLine($"Телефон:{data[1]}");
+                sw.WriteLine($"Адрес:{data[2]}");
+            }
+            sw.WriteLine("-:---");
+            //sw.Close();
         }
     }
 }

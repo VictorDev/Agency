@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Agentstvo.Owners
 {
-    class Agency:Property_Owner
+    class Agency:Property_Owner,IWritableObject
     {
         private const string type = "Агенство";
         private string name; //имя
@@ -30,7 +30,9 @@ namespace Agentstvo.Owners
             {
                 Console.WriteLine("Файл пуст. Необходимо заполнить данные об агентстве");
                 input();
-                WriteToFile.Write(this);
+                //WriteToFile.Write(this);
+                SaveManager saveManager = new SaveManager("agency");
+                saveManager.WriteObject(this);
 
             }
             else
@@ -56,7 +58,9 @@ namespace Agentstvo.Owners
                 if (cacheBool)
                 {
                     input();
-                    WriteToFile.Write(this);
+                    //WriteToFile.Write(this);
+                    SaveManager saveManager = new SaveManager("agency");
+                    saveManager.WriteObject(this);
                 }
                 else
                 {
@@ -91,6 +95,16 @@ namespace Agentstvo.Owners
                 numberOfObjects = int.Parse(Console.ReadLine());
             } while (numberOfObjects==0||numberOfObjects<MyObject.checkCountObject());
         }
-        
+
+        public void Write(SaveManager sw)
+        {
+            //StreamWriter sw = new StreamWriter("agency.txt");
+            sw.WriteLine($"Название агентства:{Name}");
+            sw.WriteLine($"Телефон:{Phone}");
+            sw.WriteLine($"Адрес:{Address}");
+            sw.WriteLine($"Количество объектов:{NumberOfObjects}");
+            //sw.Close();
+        }
+
     }
 }
