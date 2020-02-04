@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IReadableObject.cs" />
     <Compile Include="IWritableObject.cs" />
+    <Compile Include="LoadManager.cs" />
     <Compile Include="Owners\Agency.cs" />
     <Compile Include="MyObjects\Apartment.cs" />
     <Compile Include="MyObjects\House.cs" />
