@@ -1,27 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
-namespace Agentstvo
+namespace SaveLoadManager
 {
-    class SaveManager
+    interface ISaveManager
+    {
+        void WriteLine(string line);
+        void WriteObject(IWritableObject obj);
+    }
+
+    interface IWritableObject
+    {
+        void Write(ISaveManager man);
+    }
+    class SaveManager : ISaveManager
     {
         FileInfo file;
-        StreamWriter sw;
-        public SaveManager(String filename)
+
+        public SaveManager(string filename)
         {
-            file = new FileInfo(filename+".txt");
-            //file.CreateText().Close();
+            file = new FileInfo(filename + ".txt");
         }
-        public void WriteLine(String line)
+
+        public void WriteLine(string line)
         {
-            sw = file.AppendText();
-            sw.WriteLine(line);
-            sw.Close();
+            var output = file.AppendText();
+            output.WriteLine(line);
+            output.Close();
         }
+
         public void WriteObject(IWritableObject obj)
         {
             obj.Write(this);

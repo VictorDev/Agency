@@ -11,11 +11,7 @@ namespace Agentstvo
 {
     class WriteToFile
     {
-
         
-
-        
-
         static public bool ClearFile()
         {
             string answer="";

@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using System.IO;
 using Agentstvo.Owners;
 using Agentstvo.MyObjects;
+using SaveLoadManager;
 
-/*в объекте агенство можно назначить количество объектов
-тогда можно переписать функцию которая получает кол-во объектов считывая их с файла
-    */
 namespace Agentstvo
 {
-    class MyObject:IWritableObject
+    class MyObject : IReadbleObject, IWritableObject
     {
+        
         private string name; //имя объекта
         private int price; //цена объекта
         private int square; //площадь объекта
@@ -42,59 +41,128 @@ namespace Agentstvo
         public string Name { get => name; set => name = value; }
         internal ObjectType ObjectType { get => objectType; set => objectType = value; }
 
-        public MyObject(Agency agency)
+        public MyObject(Agency agency,string path)
         {
             this.agency = agency;
             Console.WriteLine("Введите данные об объекте");
                 input();
-            SaveManager saveManager = new SaveManager("myobject");
-            saveManager.WriteObject(this);
-                //WriteToFile.Write(this);
-           
-            
+            SaveManager saver = new SaveManager(path);
+            saver.WriteObject(this);
+
         }
 
-        public MyObject(string[] mass)
+
+        public MyObject(ILoadManager man)
         {
-            name = mass[0];
-            price = int.Parse(mass[1]);
-            square = int.Parse(mass[2]);
-            district = mass[3];
-            street = mass[4];
-            nHouse = mass[5];
-            if (mass[6].Equals("Участок"))
+            name = man.ReadLine().Split(':')[1];
+            string test = man.ReadLine().Split(':')[1];
+            price = int.Parse(test);
+            square = int.Parse(man.ReadLine().Split(':')[1]);
+            district = man.ReadLine().Split(':')[1];
+            street = man.ReadLine().Split(':')[1];
+            nHouse = man.ReadLine().Split(':')[1];
+            string type = man.ReadLine().Split(':')[1];
+            string type1 = man.ReadLine().Split(':')[1];
+            string type2 = man.ReadLine().Split(':')[1];
+            if (type.Equals("Участок"))
             {
                 objectType = new LandPlot();
             }
-            else if (mass[6].Equals("Дом"))
+            else if (type.Equals("Дом"))
             {
-                string[] data = { mass[7] };
+                string[] data = { type1 };
                 objectType = new House(data);
             }
-            else if (mass[6].Equals("Квартира"))
+            else if (type.Equals("Квартира"))
             {
-                string[] data = { mass[7], mass[8] };
+                string[] data = { type1, type2 };
                 objectType = new Apartment(data);
             }
             else
             {
-                string[] data = { mass[7] };
+                string[] data = { type1 };
                 objectType = new LivingRoom(data);
             }
-            bargaining = mass[9];
-            description = mass[10];
-            note = mass[11];
-            status = mass[12];
-            if (mass[13].Equals("Физ. лицо"))
+            bargaining = man.ReadLine().Split(':')[1];
+            description = man.ReadLine().Split(':')[1];
+            note = man.ReadLine().Split(':')[1];
+            status = man.ReadLine().Split(':')[1];
+            string typeOwner = man.ReadLine().Split(':')[1];
+            string typeOwner1 = man.ReadLine().Split(':')[1];
+            string typeOwner2 = man.ReadLine().Split(':')[1];
+            string typeOwner3 = man.ReadLine().Split(':')[1];
+            if (typeOwner.Equals("Физ. лицо"))
             {
-                string[] data = { mass[14], mass[15] };
+                string[] data = { typeOwner1, typeOwner2 };
                 owner = new Owner(data);
             }
-            else if (mass[13].Equals("Агенство"))
+            else if (typeOwner.Equals("Агенство"))
             {
-                string[] data = { mass[14], mass[15], mass[16] };
+                string[] data = { typeOwner1, typeOwner2, typeOwner3 };
                 owner = new Agency(data);
             }
+        }
+
+        public void Write(ISaveManager sw)
+        {
+            sw.WriteLine($"Имя объекта:{name} ");
+            sw.WriteLine($"Цена объекта:{Price} ");
+            sw.WriteLine($"Площадь объекта: {Square}");
+            sw.WriteLine($"Район расположения:{Description}");
+            sw.WriteLine($"Улица:{Street}");
+            sw.WriteLine($"Номер дома:{NHouse}");
+            ObjectType objectType = ObjectType;
+            string type = objectType.Type;
+            sw.WriteLine($"Вид недвижимости:{type}");
+            //оставляю ненужные поля пустые, чтобы общее количество строк всегда было одинаковым
+            if (type.Equals("Дом"))
+            {
+                //функция сделана для того чтобы получить все данные, даже те которые не определены в интерфейсе
+                string[] data = objectType.getData();
+                sw.WriteLine($"Номер квартиры:0");
+                sw.WriteLine($"Количество комнат:{data[0]}");
+            }
+            else if (type.Equals("Квартира"))
+            {
+                string[] data = objectType.getData();
+                sw.WriteLine($"Номер квартиры:{data[0]}");
+                sw.WriteLine($"Количество комнат:{data[1]}");
+            }
+            else if (type.Equals("Гостинка"))
+            {
+                string[] data = objectType.getData();
+                sw.WriteLine($"Номер квартиры:{data[0]}");
+                sw.WriteLine($"Количество комнат:0");
+            }
+            else
+            {
+                sw.WriteLine($"Номер квартиры:0");
+                sw.WriteLine($"Количество комнат:0");
+            }
+            sw.WriteLine($"Торг (есть/нет):{Bargaining}");
+            sw.WriteLine($"Описание:{Description}");
+            sw.WriteLine($"Примечания:{Note}");
+
+            sw.WriteLine($"Статус:{Status}");
+            Property_Owner owner = Owner;
+            string propery = owner.Type;
+            sw.WriteLine($"Владелец:{propery}");
+            //оставляю ненужные поля пустые, чтобы общее количество строк всегда было одинаковым
+            if (propery.Equals("Физ. лицо"))
+            {
+                string[] data = owner.getData();
+                sw.WriteLine($"ФИО:{data[0]}");
+                sw.WriteLine($"Телефон:{data[1]}");
+                sw.WriteLine($"Адрес:-");
+            }
+            else if (propery.Equals("Агенство"))
+            {
+                string[] data = owner.getData();
+                sw.WriteLine($"Название:{data[0]}");
+                sw.WriteLine($"Телефон:{data[1]}");
+                sw.WriteLine($"Адрес:{data[2]}");
+            }
+            //sw.WriteLine("-:---");
         }
 
         public static int[] checkFile()
@@ -213,8 +281,7 @@ namespace Agentstvo
 
         public void Write(SaveManager sw)
         {
-            //StreamWriter sw = new StreamWriter("myobject.txt", true);
-            //StreamWriter nn = new StreamWriter("test.txt",true);
+
             sw.WriteLine($"Имя объекта:{name} ");
             sw.WriteLine($"Цена объекта:{Price} ");
             sw.WriteLine($"Площадь объекта: {Square}");
@@ -274,6 +341,15 @@ namespace Agentstvo
             }
             sw.WriteLine("-:---");
             //sw.Close();
+        }
+
+        public class Loader : IReadableObjectLoader
+        {
+            public Loader() { }
+            public IReadbleObject Load(ILoadManager man)
+            {
+                return new MyObject(man);
+            }
         }
     }
 }

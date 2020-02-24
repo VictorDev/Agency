@@ -18,6 +18,7 @@ namespace Agentstvo.MyObjects
         }
         public LivingRoom(string[] data)
         {
+
            nApartment = int.Parse(data[0]);            
         }
 

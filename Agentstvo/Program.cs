@@ -6,12 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Agentstvo.MyObjects;
 using Agentstvo.Owners;
+using SaveLoadManager;
 
-//перенести запись в файл в каждый класс
-//управлять записью будет класс savemanager
-//доделать loadManager
-//реализовать возможность хранения нескольких агентств
-//создать большую модульность для объекта, не передавать объект в конструктор
 
 namespace Agentstvo
 {
@@ -19,43 +15,43 @@ namespace Agentstvo
     {
         static void Main(string[] args)
         {
-            
-            List<MyObject> listObjects = new List<MyObject>();
-            Agency agency = new Agency();
-            // ?????????
-            bool clearFile = WriteToFile.ClearFile();
-            
-                int[] mass = MyObject.checkFile();
-
-                // mass[0] - количество объектов в списке объектов
-                // mass[1] - указанное количество объектов в информации об агентстве
-                while (mass[0] != mass[1])
-                {
-                    MyObject myObject = new MyObject(agency);
-                    mass[0]++;
-                }
-            //вызов функции для получения данных об объектах из файла
-            //в функцию передается ссылка на коллекцию объектов куда добавляются новые объекты
-            //решить как вызвать функцию не создавая объект
-            //функция записи вызывается внутри объекта и все ок
-            //функция чтения вызывается извне
-            //изменить логику чтения
-            //сделать чтобы явно создавался объект,вызывалась его функция и заполнялись поля
-            //примерно MyObject myobject = new MyObject.Read();
-            //для выбора чтения/записи объекта в файл используется 2 конструктора
-            //в 1 передается агентство
-            //во 2 передается массив с данными о полях
-            //и 
-            ReadFromFile.Read(ref listObjects);
-            Console.WriteLine();
-            Console.Write("Агенство недвижимости ");
-            Console.WriteLine(agency.Name);
-            Console.Write("Всего объектов ");
-            Console.WriteLine(listObjects.Count);
-            for (int i = 0; i < listObjects.Count; i++)
+            string cache;
+            List<Agency> aList = new List<Agency>();
+            do
             {
-                Console.WriteLine($"{i + 1} - {listObjects[i].Name} ({listObjects[i].Status})");
+                Console.WriteLine("Заменить данные об агентстве? Да или нет");
+                cache = Console.ReadLine();
+                if (cache.Equals("да"))
+                {
+                    Agency agency = new Agency("agency");
+                }
+            } while (!(cache.Equals("да") || cache.Equals("нет")));
+
+            LoadManager loader1 = new LoadManager("agency");
+            loader1.BeginRead();
+            while (loader1.IsLoading)
+                aList.Add(loader1.Read(new Agency.Loader()) as Agency);
+            loader1.EndRead();
+            bool clearFile = WriteToFile.ClearFile();
+            if (clearFile)
+            {
+                for (int i = 0; i < aList[0].Cout; i++)
+                {
+                    MyObject myObject = new MyObject(aList[0], "myobject");
+                }
             }
+            LoadManager loader = new LoadManager("myobject");
+            List<MyObject> sList = new List<MyObject>();
+            loader.BeginRead();
+            while (loader.IsLoading)
+                sList.Add(loader.Read(new MyObject.Loader()) as MyObject);
+            loader.EndRead();
+            Console.Write("Агенство недвижимости ");
+            Console.WriteLine(aList[0].Name);
+            foreach (MyObject m in sList)
+                Console.WriteLine(m.Name);
+            Console.ReadKey();
+
             Console.ReadKey();
         }
     }

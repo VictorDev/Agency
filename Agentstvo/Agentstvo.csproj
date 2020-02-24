@@ -43,8 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IReadableObject.cs" />
-    <Compile Include="IWritableObject.cs" />
     <Compile Include="LoadManager.cs" />
     <Compile Include="Owners\Agency.cs" />
     <Compile Include="MyObjects\Apartment.cs" />
@@ -59,7 +57,6 @@
     <Compile Include="Owners\Property_Owner.cs" />
     <Compile Include="ReadFromFile.cs" />
     <Compile Include="SaveManager.cs" />
-    <Compile Include="Test_WritableObj.cs" />
     <Compile Include="WriteToFile.cs" />
   </ItemGroup>
   <ItemGroup>
