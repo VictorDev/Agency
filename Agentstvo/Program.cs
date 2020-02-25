@@ -29,6 +29,8 @@ namespace Agentstvo
             } while (!(cache.Equals("да") || cache.Equals("нет")));
 
             LoadManager loader1 = new LoadManager("agency");
+            Logger logger = new Logger(new FileInfo("log.txt").AppendText());
+            LoadLogger loadLogger = new LoadLogger(loader1, logger);
             loader1.BeginRead();
             while (loader1.IsLoading)
                 aList.Add(loader1.Read(new Agency.Loader()) as Agency);
@@ -42,6 +44,8 @@ namespace Agentstvo
                 }
             }
             LoadManager loader = new LoadManager("myobject");
+            Logger logger1 = new Logger(new FileInfo("log1.txt").AppendText());
+            LoadLogger loadLogger1 = new LoadLogger(loader, logger1);
             List<MyObject> sList = new List<MyObject>();
             loader.BeginRead();
             while (loader.IsLoading)

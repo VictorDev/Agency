@@ -1,0 +1,2 @@
+25.02.2020 20:21:51 Loading started from: C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\myobject.txt
+25.02.2020 20:21:51 Loading from C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\myobject.txt finished.
