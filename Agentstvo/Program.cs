@@ -23,6 +23,7 @@ namespace Agentstvo
                 cache = Console.ReadLine();
                 if (cache.Equals("да"))
                 {
+                    WriteToFile.ClearFileAgency();
                     Agency agency = new Agency("agency");
                 }
             } while (!(cache.Equals("да") || cache.Equals("нет")));
@@ -47,9 +48,10 @@ namespace Agentstvo
                 sList.Add(loader.Read(new MyObject.Loader()) as MyObject);
             loader.EndRead();
             Console.Write("Агенство недвижимости ");
-            Console.WriteLine(aList[0].Name);
+            Console.Write(aList[0].Name);
+            Console.WriteLine(": ");
             foreach (MyObject m in sList)
-                Console.WriteLine(m.Name);
+                Console.WriteLine($" - {m.Name} ({m.Status})");
             Console.ReadKey();
 
             Console.ReadKey();

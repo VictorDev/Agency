@@ -3,26 +3,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Agentstvo;
 
 namespace SaveLoadManager
 {
-    interface ILoadManager
+    public interface ILoadManager
     {
         string ReadLine();
         IReadbleObject Read(IReadableObjectLoader loader);
     }
 
-    interface IReadbleObject
+    public interface IReadbleObject
     { }
 
-    interface IReadableObjectLoader
+    public interface IReadableObjectLoader
     {
         IReadbleObject Load(ILoadManager man);
     }
-    class LoadManager : ILoadManager
+    public class LoadManager : ILoadManager
     {
         FileInfo file;
         StreamReader input;
+
+        public event EventHandler<IReadbleObject> ObjectDidLoad;
+        public event EventHandler<FileInfo> DidStartLoad;
+        public event EventHandler<FileInfo> DidEndLoad;
+
         public LoadManager(string filename)
         {
             file = new FileInfo(filename + ".txt");
@@ -38,6 +44,9 @@ namespace SaveLoadManager
         {
             if (input != null)
                 throw new IOException("Load Error");
+
+            if (DidStartLoad != null)
+                DidStartLoad.Invoke(this, file);
 
             input = file.OpenText();
         }
@@ -58,6 +67,9 @@ namespace SaveLoadManager
         {
             if (input == null)
                 throw new IOException("Load Error");
+
+            if (DidEndLoad != null)
+                DidEndLoad.Invoke(this, file);
 
             input.Close();
         }

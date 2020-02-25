@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoadManager.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Owners\Agency.cs" />
     <Compile Include="MyObjects\Apartment.cs" />
     <Compile Include="MyObjects\House.cs" />
@@ -55,7 +56,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Owners\Property_Owner.cs" />
-    <Compile Include="ReadFromFile.cs" />
     <Compile Include="SaveManager.cs" />
     <Compile Include="WriteToFile.cs" />
   </ItemGroup>

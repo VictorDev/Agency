@@ -30,5 +30,12 @@ namespace Agentstvo
                 return false;
             }
         }
+
+        static public void ClearFileAgency()
+        {
+            StreamWriter sw = new StreamWriter("agency.txt");
+            sw.Write("");
+            sw.Close();
+        }
     }
 }
