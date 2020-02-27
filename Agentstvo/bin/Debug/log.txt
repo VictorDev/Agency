@@ -4,3 +4,7 @@
 25.02.2020 20:21:08 Loading from C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\agency.txt finished.
 25.02.2020 20:21:49 Loading started from: C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\agency.txt
 25.02.2020 20:21:49 Loading from C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\agency.txt finished.
+27.02.2020 13:28:35 Loading started from: C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\agency.txt
+27.02.2020 13:28:35 Loading from C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\agency.txt finished.
+27.02.2020 13:35:20 Loading started from: C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\agency.txt
+27.02.2020 13:35:20 Loading from C:\GitHub\github\Agentstvo\Agentstvo\bin\Debug\agency.txt finished.
